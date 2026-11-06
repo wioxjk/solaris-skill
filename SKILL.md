@@ -69,6 +69,7 @@ First determine what is actually running, since commands differ significantly:
 - RBAC: `/etc/security/` (auth_attr, exec_attr, prof_attr); assign with `usermod -P <profile>`, inspect with `profiles`. Prefer RBAC over handing out root.
 - Privileges: `ppriv`, `ps -fP`; grant specific privileges instead of root where possible.
 - sudo is not standard on Solaris 10; use RBAC. Solaris 11.4 ships and supports `sudo`.
+- File integrity baselines (Solaris 10): `bart create -R / > /var/bart/manifest` and `bart compare` — the Solaris 10 BluePrint on automating file-integrity checks covers the policy-file workflow; see the security section of [sun-docs-library.md](sun-docs-library.md).
 - ZFS ACLs: `ls -v`, `chmod A+user:joe:rwx:allow:file`, `getfacl`/`setfacl`.
 - Naming: `ldapclient` for LDAP/AD integration; `svcadm restart name-service-cache` after changes.
 
@@ -113,7 +114,7 @@ Hardware reference for the Sun Fire V880 (and its close sibling V890 / V880z "Se
 - Internal disks are **FC-AL, not SCSI**: they enumerate through the fibre-channel loop (`fp`/`qlc` drivers) and appear as ordinary `cXtYdZ` devices in `format`. Don't expect `probe-scsi-all` to list them — use `probe-fcal-all` at the OBP `ok` prompt.
 - `prtdiag -v` is the primary hardware health tool: shows CPU/MEM board layout, PCI slots, memory interleave, plus environmental status (temperatures, fan banks, power supplies).
 - Hot-plug: PCI cards, disks, power supplies, fan trays are hot-swappable; PCI board config via `cfgadm -al`. ASR (Automatic System Recovery) auto-isolates failed components at POST — check `prtdiag` for deconfigured CPUs/memory.
-- Onboard dual GbE uses the Cassini `ce` driver (jumbo frames and tuning via `ndd /dev/ce`); second serial port is a plain tty, the other may be the RSC/console.
+- Onboard dual GbE uses the Cassini `ce` driver (jumbo frames and tuning via `ndd /dev/ce`); second serial port is a plain tty, the other may be the RSC/console. The CPU architecture datasheet (`sun_ultrasparc_iii.pdf`) is mirrored in the filibeto hardware docs — see [sun-docs-library.md](sun-docs-library.md).
 - After adding PCI hardware: `boot -r` (or `reboot -- -r`, or `devfsadm` online) to rebuild `/devices`.
 
 ### RSC (Remote System Control) — the V880's lights-out
@@ -253,7 +254,14 @@ OmniOS CE is the illumos distribution aimed at servers, storage and virtualizati
 - Set `auto-boot? false` in OBP before doing firmware-level work to avoid surprise boots.
 - `zoneadm attach` often fails across Solaris versions; run `zonep2vchk` first.
 
+## Reference Libraries
+
+- **Sun BluePrints archive (filibeto.org/sun/lib/)** — ~120 official Sun engineering best-practice PDFs plus hardware datasheets, security whitepapers, and Solaris 7–10 certification courseware, snapshotted ~2007. The go-to source for Solaris 8/9/10-era deep dives: minimization/hardening, JumpStart, DiskSuite/VxVM boot disks, Sun Cluster 3.0, Containers, Live Upgrade patching, Ethernet autonegotiation, Sun Fire 15K/midrange practices. Task-to-title index and site map in [sun-docs-library.md](sun-docs-library.md).
+- **OmniOS man pages (man.omnios.org)** — current command reference for illumos/OmniOS; see [omnios-manpages.md](omnios-manpages.md).
+- For anything newer than ~2007 (later Solaris 10 updates, Solaris 11, illumos), prefer man pages and distribution docs over the BluePrints archive.
+
 ## Support Files
 
 - [cheatsheet.md](cheatsheet.md) — one-line command reference organized by task.
 - [omnios-manpages.md](omnios-manpages.md) — man.omnios.org reference: section map and task-to-manpage index for OmniOS.
+- [sun-docs-library.md](sun-docs-library.md) — filibeto.org Sun library: site map and BluePrints organized by admin task.

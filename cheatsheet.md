@@ -93,6 +93,9 @@ usermod -P "Primary Administrator" alice
 profiles alice
 ppriv -l                 # list all privileges
 ppriv <pid>
+# File integrity baseline (Solaris 10)
+bart create -R / > /var/bart/manifest.$(date +%F)
+bart compare -i read,write < old.manifest  # diff against baseline
 ```
 
 ## Networking

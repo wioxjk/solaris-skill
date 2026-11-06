@@ -9,6 +9,7 @@ A Solaris / SunOS system administration skill, built for use as a [Vibe](https:/
 - Networking (dladm/ipadm and legacy ifconfig/ndd), users, RBAC, DTrace/kstat/mdb diagnostics
 - Hardware-specific guidance for the **Sun Fire V880**: RSC remote management, FC-AL internal disks, DVD rescue boot
 - **OmniOS Community Edition**: release/upgrade model, zone brands (lipkg, lx, bhyve, kvm, pkgsrc), Kayak installer, and a curated man.omnios.org reference
+- **Sun BluePrints library** (filibeto.org): curated index of Sun's engineering best-practice papers for Solaris 8/9/10-era systems
 
 ## Files
 
@@ -17,6 +18,7 @@ A Solaris / SunOS system administration skill, built for use as a [Vibe](https:/
 | `SKILL.md` | Main skill instructions (loaded when the skill is selected) |
 | `cheatsheet.md` | One-line command reference organized by task |
 | `omnios-manpages.md` | man.omnios.org section map and task-to-manpage index |
+| `sun-docs-library.md` | filibeto.org Sun library: site map and BluePrints organized by admin task |
 
 ## Usage
 
